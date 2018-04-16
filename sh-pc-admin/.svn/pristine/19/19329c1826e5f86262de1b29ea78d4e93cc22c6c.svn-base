@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+	<link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+	<style type="text/css">
+		.xtree_contianer {
+			width: 500px;
+			border: 1px solid #9C9C9C;
+			overflow: auto;
+			margin-bottom: 30px;
+			background-color: #fff;
+			padding: 10px 0 25px 5px;
+		}
+
+	</style>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div class="layui-header">
+		<div class="layui-logo">后台管理系统</div>
+		<ul class="layui-nav layui-layout-right">
+			<li class="layui-nav-item">
+				<a href="javascript:;">
+					<img src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2416277547,3410377061&fm=58" class="layui-nav-img"> 火云邪神
+				</a>
+				<dl class="layui-nav-child">
+					<dd>
+						<a href="">个人资料</a>
+					</dd>
+					<dd>
+						<a href="">修改密码</a>
+					</dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item">
+				<a href="">退出</a>
+			</li>
+		</ul>
+	</div>
+	<div class="layui-side layui-bg-black">
+		<div class="layui-side-scroll">
+		</div>
+	</div>
+
+	<div class="layui-body">
+		<div class="pad15 layui-form  layui-form-pane">
+			<div class="layui-row layui-col-space10">
+				<div class="layui-col-md4">
+					<div class="layui-form-item">
+						<label class="layui-form-label">角色名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="rolename"  placeholder="输入角色名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md4">
+					<button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i> 搜索</button>
+				</div>
+			</div>
+			<blockquote class="layui-elem-quote t-right">
+				<button class="layui-btn addSupplier" id="insertUserButton"><i class="layui-icon">&#xe654;</i> 新增角色</button>
+			</blockquote>
+			<table id="roleTable" lay-filter="roleTable"></table>
+		</div>
+	</div>
+
+	<div class="layui-footer t-center">
+		<!-- 底部固定区域 -->
+		Copyright © 2015-2025 湖南物联聚创信息科技有限公司. All rights reserved. 湘ICP备16015498号
+	</div>
+	<input style="display:none;"id="temp" value="temp" />
+	<input style="display:none;"id="selectDeptId" value="selectDeptId" />
+	<div id="infoBox" style="display:none;">
+		<div class="layui-row layui-form" style="margin-top:20px;" id="confirmBox">
+			<div class="layui-col-md11">
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色名</label>
+					<div class="layui-input-block">
+						<input type="text"   lay-verify="required" autocomplete="off"  name="rolename"class="layui-input">
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md11">
+				<div class="layui-form-item">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<input type="text"   autocomplete="off"  name="remark"class="layui-input">
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-col-md11">
+				<div class="layui-form-item">
+					<label class="layui-form-label">功能权限</label>
+					<div id="xtree2" style="height:400px;overflow:auto;" class="xtree_contianer"></div>
+				</div>
+			</div>
+			<div class="layui-col-md12 t-center">
+				<button class="layui-btn" lay-filter="sure" lay-submit>确定</button>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+</body>
+<script type="text/html" id="barDemo">
+	<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/jquery-2.1.0.js"></script>
+<script language="JavaScript" >window.baseUrl = '${request.contextPath}';</script>
+<script src="${request.contextPath}/statics/js/utils/UrlConstant.js"></script>
+<script src="${request.contextPath}/statics/js/utils/leftNav.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/layui-xtree/layui-xtree.js"></script>
+<script src="${request.contextPath}/statics/js/modules/sys/role.js"></script>
+</html>

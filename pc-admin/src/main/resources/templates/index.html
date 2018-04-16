@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 火云邪神
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">个人资料</a>
+                    </dd>
+                    <dd>
+                        <a href="/modules/customer/manager.html" target="_blank">安全设置</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="login.html">退了</a>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="pad15 layui-form  layui-form-pane">
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="businessName" required   placeholder="请输入商户内容" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">创建时间</label>
+                        <div class="layui-input-block">
+                            <input type="text"  name="createTime"  class="layui-input" id="beginTime" placeholder="创建时间">
+                        </div>
+                    </div>
+                </div>
+               <!-- <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开始时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" id="endTime" placeholder="结束时间">
+                        </div>
+                    </div>
+                </div>-->
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">省</label>
+                        <div class="layui-input-block">
+                            <select name="province" lay-filter="aihao">
+                                <option value=""></option>
+                                <option value="0">浙江省</option>
+                                <option value="1" selected="">湖南省</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">市</label>
+                        <div class="layui-input-block">
+                            <select name="city" lay-filter="aihao">
+                                <option value=""></option>
+                                <option value="0">温州市</option>
+                                <option value="1" selected="">杭州市</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i> 搜索</button>
+                </div>
+            </div>
+            <table id="demo" lay-filter="useruv"></table>
+        </div>
+    </div>
+
+    <div class="layui-footer t-center">
+        <!-- 底部固定区域 -->
+        Copyright © 2015-2025 湖南物联聚创信息科技有限公司. All rights reserved. 湘ICP备16015498号
+    </div>
+</div>
+</body>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+<script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/jquery-2.1.0.js"></script>
+<script language="JavaScript" >window.baseUrl = '${request.contextPath}';</script>
+<script src="${request.contextPath}/statics/js/utils/UrlConstant.js"></script>
+<script src="${request.contextPath}/statics/js/utils/leftNav.js"></script>
+<script src="${request.contextPath}/statics/js/index.js"></script>
+<script>
+    layui.use(["jquery", "element", "form", "table","laydate"], function() {
+
+
+        var $ = layui.jquery,
+            element = layui.element,
+            table = layui.table,
+            form = layui.form,
+            laydate=layui.laydate;
+
+
+
+        laydate.render({elem:'#beginTime',type:"date"});
+        laydate.render({elem:'#endTime',type:"date"})
+
+        form.render()
+
+
+
+        form.on('submit(search)', function(data){
+            console.log(data.elem) //被执行search事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            table.reload('demo', {
+                where:data.field
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        table.render({
+            elem: '#demo',
+           // url:business_mmanager_url.business_page,
+            height: 485,
+            response: {
+                statusName: 'code' //数据状态的字段名称，默认：code
+                ,statusCode: 0 //成功的状态码，默认：0
+                ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                ,countName: 'total' //数据总数的字段名称，默认：count
+                ,dataName: 'rows' //数据列表的字段名称，默认：data
+            },
+            cols: [
+                [ //标题栏
+                    // {checkbox: true, LAY_CHECKED: true}, //默认全选
+                    {
+                    field: 'businessName',
+                    title: '名称',
+
+                }, {
+                    field: 'createTime',
+                    title: '创建时间',
+
+                }, {
+                    field: 'principal',
+                    title: '负责人',
+
+                }, {
+                    field: 'phoneNumber',
+                    title: '手机号',
+                    minWidth:150
+
+                }, {
+                    field: 'provinces',
+                    title: '省'
+
+                }, {
+                    field: 'city',
+                    title: '市',
+
+                    //sort: true
+                }, {
+                    field: 'area',
+                    title: '区',
+                    //sort: true
+                }, {
+                    field: 'detailAddress',
+                    title: '详细地址',
+
+                }, {
+                    field: 'businessType',
+                    title: '类型',
+                },{fixed: 'right',title:"操作", width:80, align:'center', toolbar: '#barDemo'}
+                ]
+            ],
+            skin: 'row',
+            even: true,
+            page: true,
+            limits: [10 ,20, 40,80]
+        });
+
+    })
+</script>
+
+</html>

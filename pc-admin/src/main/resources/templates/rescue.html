@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+		<link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+	</head>
+
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-header">
+				<div class="layui-logo">后台管理系统</div>
+				<ul class="layui-nav layui-layout-right">
+					<li class="layui-nav-item">
+						<a href="javascript:;">
+							<img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 火云邪神
+						</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="">个人资料</a>
+							</dd>
+							<dd>
+								<a href="">安全设置</a>
+							</dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="">退了</a>
+					</li>
+				</ul>
+			</div>
+			<div class="layui-side layui-bg-black">
+				<div class="layui-side-scroll">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree" lay-filter="test">
+						<li class="layui-nav-item layui-nav-itemed">
+							<a class="" href="javascript:;">会员管理</a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;">接车单列表</a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="">事故单列表</a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:void(0)">维修单列表</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="javascript:;">维修单列表</a>
+								</dd>
+								<dd>
+									<a href="javascript:;">下料单</a>
+								</dd>
+								<dd>
+									<a href="javascript:;">库存列表</a>
+								</dd>
+							</dl>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:void(0)">账号管理</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="javascript:;">角色管理</a>
+								</dd>
+								<dd>
+									<a href="javascript:;">部门管理</a>
+								</dd>
+								<dd>
+									<a href="javascript:;">用户管理</a>
+								</dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="layui-body">
+				<div class="pad15 layui-form  layui-form-pane">
+					<div class="layui-row layui-col-space10">
+						<div class="layui-col-md4">
+							<div class="layui-form-item">
+                              <label class="layui-form-label">搜索内容</label>
+                                 <div class="layui-input-block">
+                                   <input type="text" name="title" required  lay-verify="required" placeholder="请输入搜索内容" autocomplete="off" class="layui-input">
+                                </div>
+                        </div>
+						</div>
+						<div class="layui-col-md4">
+							<div class="layui-form-item">
+                             <label class="layui-form-label">开始时间</label>
+                               <div class="layui-input-block">
+                                 <input type="text" class="layui-input" id="beginTime" placeholder="开始时间">
+                               </div>
+                        </div>
+						</div>
+						<div class="layui-col-md4">
+							<div class="layui-form-item">
+                              <label class="layui-form-label">开始时间</label>
+                               <div class="layui-input-block">
+                                 <input type="text" class="layui-input" id="endTime" placeholder="结束时间">
+                               </div>
+                        </div>
+						</div>	
+					<div class="layui-col-md4">
+							<div class="layui-form-item">
+                                <label class="layui-form-label">救援类型</label>
+                                <div class="layui-input-block">
+                                   <select name="interest" lay-filter="aihao">
+                                          <option value=""></option>
+                                          <option value="0">写作</option>
+                                          <option value="1" selected="">阅读</option>
+                                          <option value="2">游戏</option>
+                                          <option value="3">音乐</option>
+                                          <option value="4">旅行</option>
+                                  </select>
+                                 </div>
+                                </div>
+						</div>	
+						<div class="layui-col-md4">
+							<div class="layui-form-item">
+                                <label class="layui-form-label">状态</label>
+                                <div class="layui-input-block">
+                                   <select name="interest" lay-filter="aihao">
+                                          <option value=""></option>
+                                          <option value="0">写作</option>
+                                          <option value="1" selected="">阅读</option>
+                                          <option value="2">游戏</option>
+                                          <option value="3">音乐</option>
+                                          <option value="4">旅行</option>
+                                  </select>
+                                 </div>
+                              </div>
+						</div>
+						<div class="layui-col-md4">
+							<button class="layui-btn"><i class="layui-icon">&#xe615;</i> 搜索</button>
+						</div>
+					</div>
+					<table id="demo" lay-filter="useruv"></table>
+				</div>
+			</div>
+
+			<div class="layui-footer t-center">
+				<!-- 底部固定区域 -->
+				 Copyright © 2015-2025 湖南物联聚创信息科技有限公司. All rights reserved. 湘ICP备16015498号 
+			</div>
+		</div>
+	</body>
+	<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+	<script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+	<script>
+		layui.use(["jquery", "element", "form", "table","laydate"], function() {
+			var $ = layui.jquery,
+				element = layui.element,
+				table = layui.table,
+				form = layui.form,
+				laydate=layui.laydate;
+				
+				
+				laydate.render({elem:'#beginTime',type:"date"});
+				laydate.render({elem:'#endTime',type:"date"})
+				
+				form.render()
+				
+				
+			table.render({
+				elem: '#demo',
+				data: [{
+					"id": "10001",
+					"username": "潘安",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生若只如初见",
+					"experience": "116",
+					"ip": "192.168.0.8",
+					"logins": "108",
+					"joinTime": "2016-10-14"
+				}, {
+					"id": "10002",
+					"username": "李白",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "何事秋风悲画扇",
+					"experience": "12",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14",
+					"LAY_CHECKED": true
+				}, {
+					"id": "10003",
+					"username": "王勃",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "等闲变却故人心",
+					"experience": "65",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14"
+				}, {
+					"id": "10004",
+					"username": "宋玉",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "却道故人心易变",
+					"experience": "666",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14"
+				}, {
+					"id": "10005",
+					"username": "唐嫣",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "留恋处，兰舟催发",
+					"experience": "86",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14"
+				}, {
+					"id": "10006",
+					"username": "王祖贤",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "多情自古伤离别，更那堪冷落清秋节",
+					"experience": "12",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14"
+				}, {
+					"id": "10007",
+					"username": "李思思",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "东方欲晓莫道君行早",
+					"experience": "16",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14"
+				}, {
+					"id": "10008",
+					"username": "刘诗诗",
+					"email": "xianxin@layui.com",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "落霞与孤鹜齐飞，秋水共长天一色",
+					"experience": "106",
+					"ip": "192.168.0.8",
+					"logins": "106",
+					"joinTime": "2016-10-14"
+				}],
+				height: 485,
+				cols: [
+					[ //标题栏
+						// {checkbox: true, LAY_CHECKED: true}, //默认全选
+						{
+							field: 'id',
+							title: 'ID',
+
+							sort: true
+						}, {
+							field: 'username',
+							title: '用户名',
+
+						}, {
+							field: 'email',
+							title: '邮箱',
+
+						}, {
+							field: 'sign',
+							title: '签名'
+
+						}, {
+							field: 'sex',
+							title: '性别'
+
+						}, {
+							field: 'city',
+							title: '城市'
+
+						}, {
+							field: 'experience',
+							title: '积分',
+
+							sort: true
+						},{fixed: 'right',title:"操作", width:80, align:'center', toolbar: '#barDemo'}
+					]
+				],
+				skin: 'row',
+				even: true,
+				page: true,
+				limits: [10 ,20, 40,80]
+			});
+
+		})
+	</script>
+
+</html>

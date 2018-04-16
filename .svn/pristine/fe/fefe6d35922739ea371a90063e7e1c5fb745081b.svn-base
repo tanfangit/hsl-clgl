@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script language="JavaScript" >
+        window.baseUrl = '${request.contextPath}';
+    </script>
+    <link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+    <style>
+        #infoBox .layui-form-label{width:110px}
+        #infoBox .layui-input-block{margin-left:140px}
+    </style>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2416277547,3410377061&fm=58" class="layui-nav-img"> 火云邪神
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">个人资料</a>
+                    </dd>
+                    <dd>
+                        <a href="">修改密码</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">退出</a>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="pad15 layui-form  layui-form-pane" id="search">
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md4" style="width: 250px">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属品牌</label>
+                        <div class="layui-input-block">
+                            <select name="brand"  lay-verify="" lay-filter="brand" id="brand">
+                                <option value="">请选择所属品牌</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4" style="width: 250px">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属车系</label>
+                        <div class="layui-input-block">
+                            <select name="carLine" lay-verify="" id="carLine">
+                                <option value="">请选择所属品牌</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4" style="width: 250px">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">车型</label>
+                        <div class="layui-input-block">
+                            <select name="city" lay-verify="">
+                                <option value="">请选择所属品牌</option>
+                                <option value="010">北京</option>
+                                <option value="021">上海</option>
+                                <option value="0571">杭州</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4" style="width: 250px">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">部位</label>
+                        <div class="layui-input-block">
+                            <select name="interest" lay-filter="aihao" id="status">
+                                <option value="">请选择所属部位</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4" style="width: 250px">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">综合搜索</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="partsName" name="partsName"  placeholder="请输入搜索内容" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4" style="width: 100px">
+                    <button class="layui-btn" id="reloadTable" data-type="reload"><i class="layui-icon">&#xe615;</i> 搜索</button>
+                </div>
+            </div>
+            <blockquote class="layui-elem-quote t-right">
+                <button class="layui-btn addParts" id="addParts"><i class="layui-icon">&#xe654;</i> 新增配件</button>
+            </blockquote>
+            <table id="demo" lay-filter="demo"></table>
+        </div>
+    </div>
+
+    <div class="layui-footer t-center">
+        <!-- 底部固定区域 -->
+        Copyright © 2015-2025 湖南物联聚创信息科技有限公司. All rights reserved. 湘ICP备16015498号
+    </div>
+    <input style="display:none;"id="temp" value="temp" />
+    <div id="infoBox" style="display:none;">
+        <div class="layui-container layui-form layui-form-pane" style="border:1px solid #ccc" id="confirmBox">
+            <div class="layui-row m-t-20 layui-col-space10">
+                <div class="layui-col-md4 layui-hide">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">配件代id</label>
+                        <div class="layui-input-block">
+                            <input type="text" autocomplete="off" class="layui-input" name="partsId">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">配件代码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="partsNum" required lay-verify="required" placeholder="请输入配件代码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">配件名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="partsName" required lay-verify="required" placeholder="请输入配件编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">简码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="partsSimpleCode" required lay-verify="required" placeholder="请输入简码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">品牌和车系</label>
+                            <div class="layui-input-inline" style="width: 150px;">
+                                <select name="brand" lay-filter="brand" id="brandID">
+                                    <option value="">请选择所属品牌</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline" style="width: 150px;">
+                                <select name="carLine" lay-filter="carLine">
+                                    <option value="">请选择所属车系</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">适合车型</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="like[write]" lay-skin="primary" title="车型1" value="0">
+                            <input type="checkbox" name="like[read]" lay-skin="primary" title="车型2" value="1">
+                            <input type="checkbox" name="like[dai]" lay-skin="primary" title="车型3" value="2">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-row  layui-col-space10">
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">部位</label>
+                        <div class="layui-input-block">
+                            <select name="part" lay-verify="required" id="part">
+                                <option value="">请选择所属部位</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">年份</label>
+                        <div class="layui-input-block">
+                            <input type="text" readonly="true" class="layui-input" name="year" id="year" placeholder="请选择年份">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">属性</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="properties" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">单位</label>
+                        <div class="layui-input-block">
+                            <select name="unit" lay-verify="required">
+                                <option value="">请选择单位</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">成本</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="cost" required lay-verify="required" placeholder="请输入成本" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">外销价</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="exportPrice" required lay-verify="required" placeholder="请输入外销价" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">维修价</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="repairPrice" required lay-verify="required" placeholder="请输入维修价" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">索赔价</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="claimPrice1" required lay-verify="required" placeholder="请输入索赔价" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">理赔价</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="claimPrice2" required lay-verify="required" placeholder="请输入理赔价" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">库位</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="torage" required lay-verify="required" placeholder="请输入库位" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">下限</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="lowerLimit" required lay-verify="required" placeholder="请输入下限" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上限</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="upperLimit" required lay-verify="required" placeholder="请输入上限" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">最新价</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="latestPrice" required lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">网点价</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="branchPrice" required lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12 t-center m-b-20">
+                    <button class="layui-btn" lay-submit lay-filter="saveParts" id="saveBtn">确定</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+
+</body>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/utils/UrlConstant.js"></script>
+<script src="${request.contextPath}/statics/js/utils/leftNav.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/modules/maintenance/parts/parts.js"></script>
+
+</html>

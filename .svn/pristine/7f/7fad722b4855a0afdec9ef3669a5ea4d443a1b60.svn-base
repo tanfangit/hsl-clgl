@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.app.cz.modules.sys.dao.CarDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.app.cz.modules.sys.entity.CarEntity" id="carMap">
+        <result property="carId" column="car_id"/>
+        <result property="carNumber" column="car_number"/>
+        <result property="carType" column="car_type"/>
+        <result property="carTrain" column="car_train"/>
+        <result property="carType" column="car_type"/>
+        <result property="frameNumber" column="frame_number"/>
+        <result property="engineNumber" column="engine_number"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+
+    <select id="queryCarList" resultType="com.hsl.clgl.app.cz.modules.sys.entity.CarEntity">
+        SELECT
+        tcar.car_id AS carId,
+        tcar.car_number AS carNumber,
+        tct.type_name AS carType
+        FROM
+        tb_cz tcz
+        LEFT JOIN tb_cz_car tcc ON tcz.cz_id=tcc.cz_id
+        LEFT JOIN  tb_car tcar  ON   tcar.car_id=tcc.car_id
+        LEFT JOIN  tb_car_type   tct  ON  tct.id=tcar.car_type
+        WHERE   tcz.status = 1
+         AND   tcz.cz_id=#{carId}
+
+    </select>
+
+</mapper>

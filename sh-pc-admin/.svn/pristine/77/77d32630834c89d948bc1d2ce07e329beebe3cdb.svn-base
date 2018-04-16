@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.sh.pc.admin.modules.sys.dao.ShMenuDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.sh.pc.admin.modules.sys.entity.ShMenuEntity" id="shMenuMap">
+        <result property="menuId" column="menu_id"/>
+        <result property="shId" column="sh_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="perms" column="perms"/>
+        <result property="type" column="type"/>
+        <result property="icon" column="icon"/>
+        <result property="orderNum" column="order_num"/>
+    </resultMap>
+
+    <select id="queryListParentId" resultType="com.hsl.clgl.sh.pc.admin.modules.sys.entity.ShMenuEntity">
+        select * from sh.sh_menu where parent_id = #{parentId} and sh_id=#{shId} order by order_num asc
+    </select>
+
+    <select id="queryNotButtonList" resultType="com.hsl.clgl.sh.pc.admin.modules.sys.entity.ShMenuEntity">
+        select * from sh.sh_menu where type != 2 and sh_id=#{shId} order by order_num asc
+    </select>
+
+
+</mapper>

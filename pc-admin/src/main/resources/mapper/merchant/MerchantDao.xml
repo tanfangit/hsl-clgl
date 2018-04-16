@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.merchant.dao.MerchantDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.merchant.entity.MerchantEntity" id="merchantMap">
+        <result property="id" column="id"/>
+        <result property="merchantName" column="merchant_name"/>
+        <result property="merchantNo" column="merchant_no"/>
+        <result property="manager" column="manager"/>
+        <result property="managerPhone" column="manager_phone"/>
+        <result property="startWorkTime" column="start_work_time"/>
+        <result property="endWorkTime" column="end_work_time"/>
+        <result property="introduce" column="introduce"/>
+        <result property="detailedIntroduce" column="detailed_introduce"/>
+        <result property="adress" column="adress"/>
+        <result property="lngLat" column="lng_lat"/>
+        <result property="type" column="type"/>
+        <result property="brandId" column="brand_id"/>
+        <result property="provinceId" column="province_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="districtId" column="district_id"/>
+        <result property="allLatiLongi" column="all_lati_longi"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    <select id="queryMerchantList" resultType="com.hsl.clgl.pc.admin.modules.merchant.entity.MerchantEntity">
+        SELECT
+        a.id AS id,
+        a.merchant_name AS merchantName,
+        a.merchant_no AS merchantNo,
+        a.manager AS manager,
+        a.manager_phone AS managerPhone,
+        a.start_work_time AS startWorkTime,
+        a.end_work_time AS endWorkTime,
+        a.introduce,
+        a.detailed_introduce AS detailedIntroduce,
+        a.adress,
+        a.lng_lat AS lngLat,
+        a.type,
+        (
+        SELECT
+        t.`name`
+        FROM
+        sys_dict_type b,
+        sys_dict_value t
+        WHERE
+        a.type = t.`value`
+        AND b.id = t.parent_id
+        AND t.del_flag = #{del_flag}
+        AND b.del_flag = #{del_flag}
+        AND b.type = #{merchantTypeName}
+        LIMIT 1
+        ) AS typeName,
+        a.brand_id AS brandId,
+        a.province_id AS provinceId,
+        (
+        SELECT
+        b.`name`
+        FROM
+        tb_area b
+        WHERE
+        a.province_id = b.id
+        AND b.arealevel = 1
+        LIMIT 1
+        ) AS provinceName,
+        a.city_id AS cityId,
+        (
+        SELECT
+        b.`name`
+        FROM
+        tb_area b
+        WHERE
+        a.city_id = b.id
+        AND a.province_id = b.parent_id
+        AND b.arealevel = 2
+        LIMIT 1
+        ) AS cityName,
+        a.district_id AS districtId,
+        (
+        SELECT
+        b.`name`
+        FROM
+        tb_area b
+        WHERE
+        a.district_id = b.id
+        AND a.city_id = b.parent_id
+        AND b.arealevel = 3
+        LIMIT 1
+        ) AS districtName,
+        a.all_lati_longi AS allLatiLongi,
+        a.remark,
+        a.`status`,
+        a.create_time AS createTime,
+        a.create_user AS `createUser`,
+        a.update_time AS updateTime,
+        a.mapping_version AS mappingVersion,
+        a.update_user AS updateUser
+        FROM
+        tb_merchant a
+        <where>
+            a.STATUS = #{status}
+            <if test="merchantName != null and merchantName != ''">
+                and a.merchant_name like CONCAT('%',#{merchantName},'%' )
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                and a.id = #{merchantId}
+            </if>
+            <if test="type != null and type != ''">
+                and a.type = #{type}
+            </if>
+            <if test="province != null and province != ''">
+                and a.province_id = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and a.city_id = #{city}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                and a.create_time <![CDATA[>=]]> str_to_date(#{beginTime},'%Y-%m-%d')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and a.create_time <![CDATA[<]]> str_to_date(#{endTime},'%Y-%m-%d')+1
+            </if>
+        </where>
+
+    </select>
+    <select id="queryByCityId" resultType="com.hsl.clgl.pc.admin.modules.merchant.entity.MerchantEntity">
+        SELECT
+        a.id AS id,
+        a.merchant_name AS merchantName,
+        a.merchant_no AS merchantNo,
+        a.manager AS manager,
+        a.manager_phone AS managerPhone,
+        a.start_work_time AS startWorkTime,
+        a.end_work_time AS endWorkTime,
+        a.introduce,
+        a.detailed_introduce AS detailedIntroduce,
+        a.adress,
+        a.lng_lat AS lngLat,
+        a.type,
+        a.brand_id AS brandId,
+        a.province_id AS provinceId,
+        a.city_id AS cityId,
+        a.district_id AS districtId,
+        a.all_lati_longi AS allLatiLongi,
+        a.remark,
+        a.`status`,
+        a.create_time AS createTime,
+        a.create_user AS `createUser`,
+        a.update_time AS updateTime,
+        a.mapping_version AS mappingVersion,
+        a.update_user AS updateUser
+        FROM
+        tb_merchant a
+        <where>
+            a.STATUS = #{status}
+            <if test="merchantId != null and merchantId != ''">
+                and a.id != #{merchantId}
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and a.city_id = #{cityId}
+            </if>
+            and ((a.lng_lat != '' and a.lng_lat is not null) or (a.all_lati_longi != '' and a.all_lati_longi is not null))
+        </where>
+
+    </select>
+
+    <insert id="insertMerchant" parameterType="java.util.List" >
+        insert into `tb_merchant_type` (`id`, `merchant_id`, `repair_type_id`) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id},
+            #{item.merchantId},
+            #{item.repairTypeId})
+        </foreach>
+    </insert>
+    <delete id="deleteById">
+        delete
+        from tb_merchant_type
+        where merchant_id = #{merchantId}
+    </delete>
+    <select id="queryById" resultType="com.hsl.clgl.common.utils.MapUtils">
+        select a.id,
+               a.merchant_id as merchantId,
+               a.repair_type_id as repairTypeId,
+               b.repair_type_name as repairTypeName
+        from tb_merchant_type a,tb_repair_type b
+        where a.repair_type_id = b.repair_type_id
+          and a.merchant_id = #{merchantId}
+
+    </select>
+    <select id="checkPolygon"  resultType="com.hsl.clgl.pc.admin.modules.merchant.entity.MerchantEntity">
+        select t1.id AS id,
+        t1.merchant_name AS merchantName,
+        t1.merchant_no AS merchantNo,
+        t1.manager AS manager,
+        t1.manager_phone AS managerPhone,
+        t1.start_work_time AS startWorkTime,
+        t1.end_work_time AS endWorkTime,
+        t1.introduce,
+        t1.detailed_introduce AS detailedIntroduce,
+        t1.adress,
+        t1.lng_lat AS lngLat,
+        t1.type,
+        t1.brand_id AS brandId,
+        t1.province_id AS provinceId,
+        t1.city_id AS cityId,
+        t1.district_id AS districtId,
+        t1.all_lati_longi AS allLatiLongi,
+        t1.remark,
+        t1.`status`,
+        t1.create_time AS createTime,
+        t1.create_user AS `createUser`,
+        t1.update_time AS updateTime,
+        t1.update_user AS updateUser from tb_merchant_polygon t INNER JOIN tb_merchant t1 on t.merchant_id=t1.id
+        where t1.status=#{status}
+        <if test="merchantId != null and merchantId != ''">
+            and t.merchant_id != #{merchantId}
+        </if>
+        and ST_Intersects(
+        ST_GeomFromText(t.merchant_polygon),
+        ST_GeomFromText(f_json_to_polygon(#{allLatiLongi}))
+        )>0
+    </select>
+    <select id="polygonToJson" resultType="java.lang.String">
+        select f_polygon_to_json(f_json_to_polygon(#{jsonPolygon}))
+    </select>
+    <select id="queryRepairById" resultType="com.hsl.clgl.common.utils.MapUtils">
+        select a.id,
+        a.merchant_id as merchantId,
+        a.repair_type_id as repairTypeId
+        from tb_merchant_type a
+        where  a.merchant_id = #{merchantId}
+        and a.repair_type_id = #{repairTypeId}
+        LIMIT 1
+    </select>
+</mapper>

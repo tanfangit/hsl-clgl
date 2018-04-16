@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.supplier.dao.SupplierDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.supplier.entity.SupplierEntity" id="supplierMap">
+        <result property="supplierId" column="supplier_id"/>
+        <result property="supplierUsername" column="supplier_username"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="cooperationStatus" column="cooperation_status"/>
+        <result property="address" column="address"/>
+        <result property="supplierCompany" column="supplier_company"/>
+        <result property="headName" column="head_name"/>
+        <result property="headPhone" column="head_phone"/>
+        <result property="companyPhone" column="company_phone"/>
+        <result property="notes" column="notes"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    <select id="querySupplierList" resultType="com.hsl.clgl.pc.admin.modules.supplier.entity.SupplierEntity">
+        SELECT
+	supplier_id AS supplierId,
+	supplier_username AS supplierUsername,
+	supplier_name AS supplierName,
+	cooperation_status AS cooperationStatus,
+	address,
+	supplier_company AS supplierCompany,
+	head_name AS headName,
+	head_phone AS headPhone,
+	company_phone AS companyPhone,
+	notes,
+	create_time AS createTime,
+	update_time AS updateTime,
+	create_user AS `createUser`,
+	update_user AS updateUser
+FROM
+	tb_supplier
+WHERE
+        <if test="supplierName == null or supplierName == ''">
+            (supplier_name LIKE CONCAT('%','','%')
+            OR supplier_name
+            AND supplier_username LIKE CONCAT('%','','%'))
+        </if>
+        <if test="supplierName != null and supplierName != ''">
+		(supplier_name LIKE CONCAT('%',#{supplierName},'%')
+		OR supplier_name
+		AND supplier_username LIKE CONCAT('%',#{supplierName},'%'))
+        </if>
+        <if test="cooperationStatus != null and cooperationStatus != ''">
+        AND cooperation_status = #{cooperationStatus}
+        </if>
+        <if test="createTime != null and createTime != '' and updateTime != null and updateTime != ''">
+        AND create_time BETWEEN CONCAT( #{createTime},' 00:00:00' )AND CONCAT( #{updateTime} ,' 23:59:59')
+        </if>
+    </select>
+
+</mapper>

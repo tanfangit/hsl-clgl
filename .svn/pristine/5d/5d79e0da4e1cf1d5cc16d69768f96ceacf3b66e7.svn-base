@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.app.cz.modules.sys.dao.CzCarDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.app.cz.modules.sys.entity.CzCarEntity" id="czCarMap">
+        <result property="id" column="id"/>
+        <result property="czId" column="cz_id"/>
+        <result property="carId" column="car_id"/>
+    </resultMap>
+
+
+</mapper>

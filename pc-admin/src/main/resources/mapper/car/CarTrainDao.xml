@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.maintenance.car.dao.CarTrainDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.maintenance.car.entity.CarTrainEntity" id="carTrainMap">
+        <result property="id" column="id"/>
+        <result property="trainName" column="train_name"/>
+        <result property="trainNo" column="train_no"/>
+        <result property="brandId" column="brand_id"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    <select id="queryTrainList" resultType="com.hsl.clgl.pc.admin.modules.maintenance.car.entity.CarTrainEntity">
+        SELECT
+            id AS id,
+            train_name AS trainName,
+            train_no AS trainNo,
+            brand_id AS brandId,
+            (
+                SELECT
+                    b.brand_name
+                FROM
+                    tb_car_brand b
+                WHERE
+                    tb_car_train.brand_id = b.brand_id
+                AND b.`status` = #{status}
+                LIMIT 1
+            ) AS brandName,
+            remark,
+            `status`,
+            create_time AS createTime,
+            create_user AS `createUser`,
+            update_time AS updateTime,
+            update_user AS updateUser
+        FROM
+            tb_car_train
+        <where>
+            STATUS = #{status}
+            <if test="trainName != null and trainName != ''">
+                and train_name like CONCAT('%',#{trainName},'%' )
+            </if>
+            <if test="brandId != null and brandId != ''">
+                and brand_id = #{brandId}
+            </if>
+        </where>
+
+    </select>
+    <select id="queryTrain" resultType="com.hsl.clgl.pc.admin.modules.maintenance.car.entity.CarTrainEntity">
+        select a.id as id,a.train_name as trainName from tb_car_train a where a.`status`= #{status}
+        <if test="brandId != null and brandId != ''">
+            and brand_id = #{brandId}
+        </if>
+    </select>
+
+</mapper>

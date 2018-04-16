@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hsl-clgl</artifactId>
+        <groupId>com.hsl.clgl</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>clgl-common</artifactId>
+    <packaging>jar</packaging>
+
+    <name>clgl-common</name>
+    <url>http://maven.apache.org</url>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>

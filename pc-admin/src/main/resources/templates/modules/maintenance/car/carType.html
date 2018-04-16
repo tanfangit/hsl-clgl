@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+</head>
+<script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+<script type="text/javascript" src="${request.contextPath}/statics/js/jquery-2.1.0.js"></script>
+<script language="JavaScript" >window.baseUrl = '${request.contextPath}';</script>
+<script src="${request.contextPath}/statics/js/utils/UrlConstant.js"></script>
+<script src="${request.contextPath}/statics/js/utils/leftNav.js"></script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+<script src="${request.contextPath}/statics/js/modules/maintenance/car/carType.js"></script>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2416277547,3410377061&fm=58" class="layui-nav-img"> 火云邪神
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">个人资料</a>
+                    </dd>
+                    <dd>
+                        <a href="">修改密码</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">退出</a>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="pad15 layui-form  layui-form-pane">
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 110px;">品牌车系</label>
+                            <div class="layui-input-inline" style="width: 120px;">
+                                <select name="carBrand" lay-filter="carBrand" placeholder="请选择品牌名称" id="carBrand">
+                                    <option value="">请选择品牌</option>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline" style="width: 120px;">
+                                <select name="carTrain" lay-filter="carTrain" placeholder="请选择车系名称" id="carTrain">
+                                    <option value="">请选择车系</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--<label class="layui-form-label">所属品牌车系</label>-->
+                        <!--<div class="layui-input-block">-->
+                            <!--<select name="carBrand" lay-filter="carBrand" placeholder="请选择品牌名称" id="carBrand">-->
+                                <!--<option value="">请选择品牌</option>-->
+                            <!--</select>-->
+
+                        <!--</div>-->
+                        <!--<div class="layui-input-block">-->
+                            <!--<select name="carTrain" lay-filter="carTrain" placeholder="请选择车系名称" id="carTrain">-->
+                                <!--<option value="">请选择车系</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!--<div class="layui-col-md4">-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-input-block">-->
+                            <!--<select name="carTrain" lay-filter="carTrain" placeholder="请选择车系名称" id="carTrain">-->
+                                <!--<option value="">请选择车系</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">车型名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="typeName" name="typeName"  placeholder="请输入车型名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4"  >
+                    <!--<button class="layui-btn" lay-submit><i class="layui-icon">&#xe615;</i> 搜索</button>-->
+                    <button class="layui-btn" id="reloadTable" data-type="reload"><i class="layui-icon">&#xe615;</i> 搜索</button>
+                </div>
+            </div>
+            <blockquote class="layui-elem-quote t-right">
+                <button class="layui-btn addTypeName" id="addTypeName"><i class="layui-icon">&#xe654;</i> 新增车型</button>
+            </blockquote>
+            <table id="typeTable" lay-filter="typeTable"></table>
+        </div>
+    </div>
+    <div class="layui-footer t-center">
+        <!-- 底部固定区域 -->
+        Copyright © 2015-2025 湖南物联聚创信息科技有限公司. All rights reserved. 湘ICP备16015498号
+    </div>
+
+    <div id="infoBox" style="display:none;">
+        <div class="layui-row layui-form" style="margin-top:20px;" id="confirmBox">
+            <div class="layui-col-md11 layui-hide">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品牌id</label>
+                    <div class="layui-input-block">
+                        <input type="text"    autocomplete="off" class="layui-input" id="updateBrandId" name="updateBrandId" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11 layui-hide">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车系id</label>
+                    <div class="layui-input-block">
+                        <input type="text"    autocomplete="off" class="layui-input" id="updateTrainId" name="updateTrainId" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11 layui-hide">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车型id</label>
+                    <div class="layui-input-block">
+                        <input type="text"    autocomplete="off" class="layui-input" id="updateTypeId" name="updateTypeId" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属品牌</label>
+                    <div class="layui-input-block">
+                        <select name="updateCarBrand" lay-filter="updateCarBrand" placeholder="请选择品牌名称" id="updateCarBrand">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属车系</label>
+                    <div class="layui-input-block">
+                        <select name="updateCarTrain" lay-filter="updateCarTrain" placeholder="请选择车系名称" id="updateCarTrain">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车型编号</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="updateTypeNo" class="layui-input" name="updateTypeNo">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车型名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="updateTypeName" class="layui-input" name="updateTypeName">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md11">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="updateRemark" class="layui-input" name="updateRemark">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md12 t-center">
+                <button class="layui-btn" lay-submit lay-filter="saveType">确定</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--<div id="selectInfoBox" style="display:none;">-->
+        <!--<div class="layui-row layui-form" style="margin-top:20px;" id="selectConfirmBox">-->
+            <!--<div class="layui-col-md11 layui-hide">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">品牌id</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<input type="text"    autocomplete="off" class="layui-input" id="selectBrandId" name="selectBrandId" >-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11 layui-hide">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">车系id</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<input type="text"    autocomplete="off" class="layui-input" id="selectTrainId" name="selectTrainId" >-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11 layui-hide">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">车型id</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<input type="text"    autocomplete="off" class="layui-input" id="selectTypeId" name="selectTypeId" >-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">所属品牌</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<select name="selectCarBrand" lay-filter="selectCarBrand" placeholder="请选择品牌名称" id="selectCarBrand">-->
+
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">所属车系</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<select name="selectCarTrain" lay-filter="selectCarTrain" placeholder="请选择车系名称" id="selectCarTrain">-->
+
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">车型编号</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<input type="text" id="selectTypeNo" class="layui-input" name="selectTypeNo">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">车型名称</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<input type="text" id="selectTypeName" class="layui-input" name="selectTypeName">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-col-md11">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">备注</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<input type="text" id="selectRemark" class="layui-input" name="selectRemark">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="layui-col-md12 t-center">-->
+                <!--<button class="layui-btn" lay-submit lay-filter="selectType">确定</button>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+
+</div>
+
+
+
+</body>
+
+</html>

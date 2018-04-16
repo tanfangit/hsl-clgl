@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script language="JavaScript" >
+            window.baseUrl = '${request.contextPath}';
+		</script>
+		<link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+		<link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+	</head>
+
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-header">
+				<div class="layui-logo">后台管理系统</div>
+				<ul class="layui-nav layui-layout-right">
+					<li class="layui-nav-item">
+						<a href="javascript:;">
+							<img src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2416277547,3410377061&fm=58" class="layui-nav-img"> 火云邪神
+						</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="">个人资料</a>
+							</dd>
+							<dd>
+								<a href="">修改密码</a>
+							</dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="">退出</a>
+					</li>
+				</ul>
+			</div>
+			<div class="layui-side layui-bg-black">
+				<div class="layui-side-scroll">
+				</div>
+			</div>
+
+			<div class="layui-body">
+				<div class="pad15 layui-form  layui-form-pane" id="search">
+					<div class="layui-row layui-col-space10">
+						<div class="layui-col-md4" style="width: 250px">
+							<div class="layui-form-item">
+								<label class="layui-form-label">车牌号</label>
+								<div class="layui-input-block">
+									<input type="text" id="trailerNum" name="trailerNum"  placeholder="请输入搜索内容" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-md4" style="width: 250px">
+							<div class="layui-form-item">
+								<label class="layui-form-label">创建时间</label>
+								<div class="layui-input-block">
+									<input type="text" readonly="true" class="layui-input" name="beginTime" id="beginTime" placeholder="开始时间">
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-md4" style="width: 250px">
+							<div class="layui-form-item">
+								<label class="layui-form-label">——</label>
+								<div class="layui-input-block">
+									<input type="text" readonly="true" class="layui-input" name="endTime" id="endTime" placeholder="结束时间">
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-md4" style="width: 250px">
+							<div class="layui-form-item">
+								<label class="layui-form-label">所属公司</label>
+								<div class="layui-input-block">
+									<input type="text" id="company" name="company"  placeholder="请输入搜索内容" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-md4" style="width: 100px">
+							<button class="layui-btn" id="reloadTable" data-type="reload"><i class="layui-icon">&#xe615;</i> 搜索</button>
+						</div>
+					</div>
+					<blockquote class="layui-elem-quote t-right">
+						<button class="layui-btn addTrailer" id="addTrailer"><i class="layui-icon">&#xe654;</i> 新增拖车</button>
+					</blockquote>
+					<table id="demo" lay-filter="demo"></table>
+				</div>
+			</div>
+
+			<div class="layui-footer t-center">
+				<!-- 底部固定区域 -->
+				Copyright © 2015-2025 湖南物联聚创信息科技有限公司. All rights reserved. 湘ICP备16015498号
+			</div>
+			<input style="display:none;"id="temp" value="temp" />
+			<div id="infoBox" style="display:none;">
+			<div class="layui-row layui-form" style="margin-top:20px;" id="confirmBox">
+				<div class="layui-col-md11 layui-hide">
+					<div class="layui-form-item">
+						<label class="layui-form-label">拖车id</label>
+						<div class="layui-input-block">
+							<input type="text"    autocomplete="off" class="layui-input" name="trailerId" >
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md11">
+					<div class="layui-form-item">
+						<label class="layui-form-label">车牌号</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input" lay-verify="required" name="trailerNum">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md11" >
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属公司</label>
+						<div class="layui-input-block">
+							<select id="trailerCompany" name="trailerCompany" lay-filter="category" lay-verify="required">
+								<option value="">请选择</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md12 t-center">
+					<button class="layui-btn" lay-submit lay-filter="saveTrailerList" id="saveBtn">确定</button>
+				</div>
+			</div>
+
+		</div>
+			
+			
+			
+		</div>
+
+		
+
+	</body>
+	<script type="text/html" id="barDemo">
+		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	</script>
+	<script type="text/javascript" src="${request.contextPath}/statics/js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+	<script type="text/javascript" src="${request.contextPath}/statics/js/utils/UrlConstant.js"></script>
+	<script src="${request.contextPath}/statics/js/utils/leftNav.js"></script>
+	<script type="text/javascript" src="${request.contextPath}/statics/js/modules/trailer/trailerList.js"></script>
+
+
+</html>

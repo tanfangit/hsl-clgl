@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.trailerlist.dao.TrailerListDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.trailerlist.entity.TrailerListEntity" id="trailerListMap">
+        <result property="trailerListId" column="trailer_list_id"/>
+        <result property="trailerCarNo" column="trailer_car_no"/>
+        <result property="trailerDriverId" column="trailer_driver_id"/>
+        <result property="trailerCompanyId" column="trailer_company_id"/>
+        <result property="rescueOrCaseId" column="rescue_or_case_id"/>
+        <result property="trailerListType" column="trailer_list_type"/>
+        <result property="trailerListStatus" column="trailer_list_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    <select id="queryTrailerListList" resultType="com.hsl.clgl.pc.admin.modules.trailerlist.entity.TrailerListEntity">
+        SELECT
+	a.*,
+	b.trailer_driver_name AS driverName,
+	b.trailer_driver_mobile AS driverMobile,
+	c.trailer_company_name AS companyName
+FROM
+	clgl.tb_trailer_list a
+LEFT JOIN clgl.tb_trailer_driver b ON a.trailer_driver_id=b.trailer_driver_id
+LEFT JOIN clgl.tb_trailer_company c ON a.trailer_company_id=c.trailer_company_id
+        WHERE 1=1
+        <if test="createTime != null and createTime != '' and updateTime != null and updateTime != ''">
+            AND (a.create_time BETWEEN CONCAT( #{createTime},' 00:00:00' )AND CONCAT( #{updateTime} ,' 23:59:59'))
+        </if>
+        <if test="trailerCompanyId != null and trailerCompanyId != ''">
+            AND a.trailer_company_id = #{trailerCompanyId}
+        </if>
+        <if test="trailerListNo != null and trailerListNo != ''">
+            AND (a.trailer_list_id OR a.rescue_or_case_id LIKE CONCAT('%',#{trailerListNo},'%' ))
+        </if>
+        ORDER BY a.create_time DESC 
+    </select>
+
+</mapper>

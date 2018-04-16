@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+        <link rel="stylesheet" href="${request.contextPath}/statics/layui/css/layui.css" />
+        <link rel="stylesheet" href="${request.contextPath}/statics/css/common.css" />
+		<link rel="stylesheet" href="${request.contextPath}/statics/css/rescueDetail.css" />
+        <style type="text/css">
+            *{
+                margin:0;
+                padding:0;
+                list-style:none;
+                box-sizing: border-box;
+            }
+            .time_line{
+                display:flex;
+                margin-top:10px;
+            }
+            .time_line li{
+                flex:1;
+                position:relative;
+            }
+            .time_line li:after{
+                content:"";
+                position:absolute;
+                z-index:99;
+                top:30px;
+                left:-50%;
+                width:100%;
+                height:5px;
+                background:#ddd;
+
+            }
+            .time_line li:first-child:after{
+                display:none;
+            }
+            .time{
+                text-align:center;
+                margin-top:80px;
+                margin-bottom:10px;
+                color:#999;
+            }
+            .state{
+                position:absolute;
+                z-index:100;
+                width:60px;
+                height:60px;
+                font-size:14px;
+                line-height:60px;
+                text-align:center;
+                background:#ccc;
+                border-radius:50%;
+                color:#fff;
+                left:50%;
+                margin-left:-30px;
+            }
+            .active .state{
+                background:#009688;
+            }
+            .time_line .active:after{
+                background:#009688;
+            }
+        </style>
+	</head>
+
+	<body>
+    <ul class="time_line">
+        <li>
+            <div class="state">
+                已提交
+            </div>
+            <div class="time">
+
+            </div>
+        </li>
+        <li>
+            <div class="state">
+                已派单
+            </div>
+            <div class="time">
+
+            </div>
+        </li>
+        <li>
+            <div class="state">
+                已接单
+            </div>
+            <div class="time">
+
+            </div>
+        </li>
+        <li>
+            <div class="state">
+                救援中
+            </div>
+            <div class="time">
+
+            </div>
+        </li>
+        <li>
+            <div class="state">
+                已完成
+            </div>
+            <div class="time">
+
+            </div>
+        </li>
+        <li>
+            <div class="state">
+                已评价
+            </div>
+            <div class="time">
+
+            </div>
+        </li>
+    </ul>
+			<div >
+				<div class="pad15 layui-form  layui-form-pane">
+					<blockquote class="layui-elem-quote layui-clear">
+						<div class="layui-col-md9">
+							救援单号：<b ><span id="rescueId"></span></b>
+						</div>
+						<div class="layui-col-md3 t-right">
+							接车单号：<b></b>
+						</div>
+					</blockquote>
+					
+					<blockquote class="layui-elem-quote layui-quote-nm">
+                    <div class="layui-row layui-col-space10">
+                         <div class="layui-col-md2">
+                                               救援类型：
+                            </div>
+                          <div class="layui-col-md10">
+                             <b ><span id="rescueTypeName"></span></b>
+                         </div>
+                          <div class="layui-col-md2">
+                                               故障说明：
+                         </div>
+                         <div class="layui-col-md10">
+                             <b ><span id="rescueRemark"></span></b>
+                         </div>
+                          <div class="layui-col-md2">
+                                                 车辆位置：
+                         </div>
+                         <div class="layui-col-md10">
+                             <b ><span id="rescueAdress"></span></b>
+                         </div>
+
+                          <div class="layui-col-md2">
+                                               车牌号：
+                         </div>
+                         <div class="layui-col-md10">
+                             <b ><span id="rescueCarNo"></span></b>
+                         </div>
+                         <div class="layui-col-md2">
+                             联系人：
+                         </div>
+                         <div class="layui-col-md10">
+                             <b ><span id="rescuePerson"></span></b>
+                         </div>
+                          <div class="layui-col-md2">
+                                               联系人手机：
+                         </div>
+                         <div class="layui-col-md10">
+                             <b ><span id="rescuePhone"></span></b>
+                         </div>
+                     </div>
+
+                       <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md1">
+                                照片：
+                            </div>
+                            <div class="layui-col-md11">
+                                <ul class="picList">
+                                    <li class="smallPic t-center" style="background-image: url(http://d.hiphotos.baidu.com/image/pic/item/f9198618367adab45913c15e87d4b31c8601e4e8.jpg);"></li>
+                                    <li class="smallPic tcenter" style="background-image: url(http://c.hiphotos.baidu.com/image/pic/item/8644ebf81a4c510f2bcc98016c59252dd42aa5a5.jpg);"></li>
+                                    <li class="smallPic tcenter" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4078417422,4227548176&fm=27&gp=0.jpg);"></li>
+                                    <li class="smallPic tcenter" style="background-image: url(http://pic.hunter-its.com/download/20170526_164155458.jpg);"></li>
+                                    <li class="smallPic tcenter" style="background-image: url(http://news.cnhubei.com/xw/yl/201708/W020170804743435119666.jpg);"></li>
+                                    <li class="smallPic tcenter" style="background-image: url(http://pic.yesky.com/uploadImages/2015/142/05/59K2874Y760V.jpg);"></li>
+                                </ul>
+                            </div>
+                        </div>
+                     <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md2">
+                                是否需要拖车：
+                            </div>
+                            <div class="layui-col-md10">
+                                <b ><span id="trailerListStatus"></span></b>
+                            </div>
+                         <div id="trailerLogList">
+
+                             <!-- <div class="layui-col-md12">
+                                    2018-01-18 14:40:00     已派单；
+                                </div>
+                                <div class="layui-col-md12">
+                                    2018-01-18 14:58:06     XX公司XX师傅驾驶牌照XXX的拖车前去救援，师傅手机号：139XXXXXXXX；
+                                </div>
+                                <div class="layui-col-md12">
+                                    2018-01-18 14:40:00     已派单；
+                                </div>
+                                <div class="layui-col-md12">
+                                    2018-01-18 14:58:06     XX公司XX师傅驾驶牌照XXX的拖车前去救援，师傅手机号：139XXXXXXXX；
+                                </div>-->
+                         </div>
+                         <div class="layui-col-md4 t-center">
+                             <button id="jdBtn"   class="layui-btn">接单</button>
+                         </div>
+                            <div class="layui-col-md4 t-center">
+                                <button id="wcBtn" class="layui-btn">完成</button>
+                            </div>
+                                 <div class="layui-col-md4">
+                                     <button class="layui-btn">生成接车单</button>
+                                 </div>
+                        </div>
+                </blockquote>
+                </div>
+            </div>
+
+    </div>
+
+
+		<div id="bigPic" style="display:none;">
+			<div id="picContainer">
+
+			</div>
+		</div>
+	</body>
+	<script type="text/html" id="barDemo">
+		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	</script>
+    <script type="text/javascript" src="${request.contextPath}/statics/layui/layui.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/statics/js/jquery-2.1.0.js"></script>
+    <script language="JavaScript" >window.baseUrl = '${request.contextPath}';</script>
+    <script src="${request.contextPath}/statics/js/utils/UrlConstant.js"></script>
+    <script src="${request.contextPath}/statics/js/utils/leftNav.js"></script>
+    <script src="${request.contextPath}/statics/js/modules/rescue/rescueDetail.js"></script>
+	<script>
+
+	</script>
+
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.trailer.dao.TrailerDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.trailer.entity.TrailerEntity" id="trailerMap">
+        <result property="trailerId" column="trailer_id"/>
+        <result property="trailerCarNo" column="trailer_car_no"/>
+        <result property="trailerCompanyId" column="trailer_company_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+    <select id="queryTrailerList" resultType="com.hsl.clgl.pc.admin.modules.trailer.entity.TrailerEntity">
+        SELECT
+b.trailer_company_name as companyName,
+	a.*
+FROM
+	tb_trailer a,tb_trailer_company b
+WHERE
+a.trailer_company_id=b.trailer_company_id
+        <if test="trailerCarNo != null and trailerCarNo != ''">
+            AND a.trailer_car_no like CONCAT('%',#{trailerCarNo},'%' )
+        </if>
+        <if test="trailerCompanyId != null and trailerCompanyId != ''">
+            AND b.trailer_company_name like CONCAT('%',#{trailerCompanyId},'%' )
+        </if>
+        <if test="createTime != null and createTime != '' and updateTime != null and updateTime != ''">
+            AND (a.create_time BETWEEN CONCAT( #{createTime},' 00:00:00' )AND CONCAT( #{updateTime} ,' 23:59:59'))
+        </if>
+    </select>
+
+</mapper>

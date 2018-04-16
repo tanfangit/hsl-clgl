@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.sh.pc.admin.modules.rescue.dao.ShRescueOrderDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.sh.pc.admin.modules.rescue.entity.ShRescueOrderEntity" id="shRescueOrderMap">
+        <result property="rescueId" column="rescue_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="shId" column="sh_id"/>
+        <result property="trailerListId" column="trailer_list_id"/>
+        <result property="jcLisId" column="jc_lis_id"/>
+        <result property="rescueCarNo" column="rescue_car_no"/>
+        <result property="rescueTypeCode" column="rescue_type_code"/>
+        <result property="isNormalDriving" column="is_normal_driving"/>
+        <result property="isNeedTrailer" column="is_need_trailer"/>
+        <result property="rescueRemark" column="rescue_remark"/>
+        <result property="rescuePhone" column="rescue_phone"/>
+        <result property="rescueAdress" column="rescue_adress"/>
+        <result property="rescueLngLat" column="rescue_lng_lat"/>
+        <result property="rescuePerson" column="rescue_person"/>
+        <result property="rescueStatus" column="rescue_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updatePlat" column="update_plat"/>
+    </resultMap>
+
+    <select id="queryRescueOrderList" resultType="com.hsl.clgl.sh.pc.admin.modules.rescue.entity.ShRescueOrderEntity">
+    SELECT
+    sro.rescue_id  AS rescueId,
+    sro.create_time  AS createTime,
+    sro.rescue_person  AS rescuePerson,
+    sro.rescue_phone  AS rescuePhone,
+    sro.rescue_status  AS rescueStatus,
+    sro.rescue_type_code AS rescueTypeCode,
+    sro.jc_lis_id  AS jcLisId,
+    sro.trailer_list_id  AS trailerListId,
+    sro.is_need_trailer AS isNeedTrailer,
+    sro.sh_id AS shId,
+    dict.name  AS rescueTypeName,
+    ttl.trailer_list_status  AS trailerListStatus
+    FROM
+    sh_rescue_order sro
+    LEFT JOIN
+    tb_trailer_list  ttl ON ttl.trailer_list_id=sro.trailer_list_id
+    LEFT JOIN (
+    SELECT sdv.*
+    FROM
+    sys_dict_type sdt
+    LEFT JOIN
+    sys_dict_value sdv  ON   sdt.id=sdv.parent_id
+    WHERE
+    sdt.type=#{rescue_type}) dict  ON  dict.value=sro.rescue_type_code
+    <where>
+        1 = 1
+
+        <if test="shId != null and shId != ''">
+            and  sro.sh_id  =#{shId}
+        </if>
+        <if test="rescueId != null and rescueId != ''">
+            and  sro.rescue_id  =#{rescueId}
+        </if>
+
+        <if test="rescueStatus != null and rescueStatus != ''">
+            and   sro.rescue_status  =#{rescueStatus}
+        </if>
+
+        <if test="rescueType != null and rescueType != ''">
+            and sro.rescue_type_code  =#{rescueType}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and tcz.create_time <![CDATA[>=]]> str_to_date(#{beginTime},'%Y-%m-%d')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and tcz.create_time<![CDATA[<]]> str_to_date(#{endTime},'%Y-%m-%d')+1
+        </if>
+    </where>
+    ORDER BY createTime desc
+
+</select>
+
+
+    <select id="queryInfoByRescueId" resultType="com.hsl.clgl.sh.pc.admin.modules.rescue.entity.ShRescueOrderEntity">
+        SELECT
+        sro.rescue_id  AS rescueId,
+        sro.create_time  AS createTime,
+        sro.rescue_person  AS rescuePerson,
+        sro.rescue_phone  AS rescuePhone,
+        sro.rescue_status  AS rescueStatus,
+        sro.rescue_type_code AS rescueTypeCode,
+        sro.rescue_remark AS rescueRemark,
+        sro.rescue_adress AS rescueAdress,
+         sro.rescue_car_no AS rescueCarNo,
+        sro.jc_lis_id  AS jcLisId,
+        sro.trailer_list_id  AS trailerListId,
+        sro.is_need_trailer AS isNeedTrailer,
+        dict.name  AS rescueTypeName,
+        ttl.trailer_list_status  AS trailerListStatus
+        FROM
+        sh_rescue_order sro
+        LEFT JOIN
+        tb_trailer_list  ttl ON ttl.trailer_list_id=sro.trailer_list_id
+        LEFT JOIN (
+        SELECT sdv.*
+        FROM
+        sys_dict_type sdt
+        LEFT JOIN
+        sys_dict_value sdv  ON   sdt.id=sdv.parent_id
+        WHERE
+        sdt.type=#{rescue_type}) dict  ON  dict.value=sro.rescue_type_code
+         WHERE  sro.rescue_id=#{rescueId}
+
+
+    </select>
+</mapper>

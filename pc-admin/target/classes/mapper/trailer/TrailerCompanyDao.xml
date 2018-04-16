@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.trailer.dao.TrailerCompanyDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.trailer.entity.TrailerCompanyEntity" id="trailerCompanyMap">
+        <result property="trailerCompanyId" column="trailer_company_id"/>
+        <result property="trailerCompanyName" column="trailer_company_name"/>
+        <result property="trailerCompanyPerson" column="trailer_company_person"/>
+        <result property="trailerCompanyMobile" column="trailer_company_mobile"/>
+        <result property="trailerCompanyPhone" column="trailer_company_phone"/>
+        <result property="trailerCompanyAddress" column="trailer_company_address"/>
+        <result property="trailerCompanyRemark" column="trailer_company_remark"/>
+        <result property="trailerCompanySjdm" column="trailer_company_sjdm"/>
+        <result property="trailerCompanyDjdm" column="trailer_company_djdm"/>
+        <result property="trailerCompanyXjdm" column="trailer_company_xjdm"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+
+    <select id="queryTrailerCompanyByName" resultType="com.hsl.clgl.pc.admin.modules.trailer.entity.TrailerCompanyEntity">
+    SELECT f.name area, e.*
+FROM
+(SELECT
+	d. NAME city, c.*
+FROM
+	(
+		SELECT
+			b. NAME province,
+			a.*
+		FROM
+			tb_trailer_company a,
+			tb_area b
+		WHERE
+			a.trailer_company_sjdm = b.id
+	) c,
+	tb_area d
+WHERE
+	c.trailer_company_djdm = d.id) e,
+	tb_area f
+WHERE
+	e.trailer_company_xjdm = f.id
+        <if test="trailerCompanyName != null and trailerCompanyName != ''">
+            and e.trailer_company_name like CONCAT('%',#{trailerCompanyName},'%' )
+        </if>
+        <if test="createTime != null and createTime != '' and updateTime != null and updateTime != ''">
+            and (e.create_time BETWEEN CONCAT( #{createTime},' 00:00:00' )AND CONCAT( #{updateTime} ,' 23:59:59'))
+        </if>
+
+    </select>
+
+
+</mapper>

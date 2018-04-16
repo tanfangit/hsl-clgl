@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.trailer.dao.TrailerDriverDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.trailer.entity.TrailerDriverEntity" id="trailerDriverMap">
+        <result property="trailerDriverId" column="trailer_driver_id"/>
+        <result property="trailerDriverName" column="trailer_driver_name"/>
+        <result property="trailerCompanyId" column="trailer_company_id"/>
+        <result property="trailerDriverMobile" column="trailer_driver_mobile"/>
+        <result property="trailerDriverStatus" column="trailer_driver_status"/>
+        <result property="trailerDriverRemark" column="trailer_driver_remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+
+    <select id="queryTrailerDriverList" resultType="com.hsl.clgl.pc.admin.modules.trailer.entity.TrailerDriverEntity">
+        SELECT
+        ttd.trailer_driver_id AS trailerDriverId,
+        ttd.trailer_driver_name AS trailerDriverName,
+        ttd.trailer_driver_mobile AS trailerDriverMobile,
+        ttd.trailer_driver_status AS trailerDriverStatus,
+        ttc.trailer_company_id AS trailerCompanyId,
+        ttc.trailer_company_name AS trailerCompanyName,
+        ttd.create_time AS createTime
+        FROM
+        tb_trailer_driver ttd
+        LEFT JOIN tb_trailer_company ttc ON  ttd.trailer_company_id=ttc.trailer_company_id
+        <where>
+             1=1
+            <if test="driverName != null and driverName != ''">
+                and ttd.trailer_driver_name  like CONCAT('%',#{driverName},'%' )
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and ttc.trailer_company_id =#{companyName}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                and ttc.create_time <![CDATA[>=]]> str_to_date(#{beginTime},'%Y-%m-%d')
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and ttc.create_time <![CDATA[<]]> str_to_date(#{endTime},'%Y-%m-%d')+1
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

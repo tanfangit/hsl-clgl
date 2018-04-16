@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.maintenance.car.dao.CarTypeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.maintenance.car.entity.CarTypeEntity" id="carTypeMap">
+        <result property="id" column="id"/>
+        <result property="typeName" column="type_name"/>
+        <result property="typeNo" column="type_no"/>
+        <result property="trainId" column="train_id"/>
+        <result property="remark" column="remark"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <select id="queryTypeList" resultType="com.hsl.clgl.pc.admin.modules.maintenance.car.entity.CarTypeEntity">
+        SELECT
+        a.id AS id,
+        a.type_name AS typeName,
+        a.type_no AS typeNo,
+        a.train_id AS trainId,
+        b.train_name AS trainName,
+        c.brand_id AS brandId,
+        c.brand_name AS brandName,
+        a.remark,
+        a.`status`,
+        a.create_time AS createTime,
+        a.create_user AS `createUser`,
+        a.update_time AS updateTime,
+        a.update_user AS updateUser
+        FROM
+        tb_car_type a,
+        tb_car_train b,
+        tb_car_brand c
+        <where>
+            a.train_id = b.id
+        AND b.brand_id = c.brand_id
+        AND c.STATUS = #{status}
+        AND b.STATUS = #{status}
+        AND a.STATUS = #{status}
+            <if test="typeName != null and typeName != ''">
+                and a.type_name like CONCAT('%',#{typeName},'%' )
+            </if>
+            <if test="trainId != null and trainId != ''">
+                and a.train_id = #{trainId}
+            </if>
+            <if test="brandId != null and brandId != ''">
+                and b.brand_id = #{brandId}
+            </if>
+        </where>
+
+    </select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.dictionary.dao.SysDictValueDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.dictionary.entity.SysDictValueEntity" id="sysDictValueMap">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="value" column="value"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="remark" column="remark"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <select id="deleteValueListByParentId" resultType="com.hsl.clgl.pc.admin.modules.dictionary.entity.SysDictValueEntity">
+        DELETE FROM sys_dict_value WHERE parent_id = #{Id}
+    </select>
+
+
+    <select id="selectValueListByType" resultType="com.hsl.clgl.pc.admin.modules.dictionary.entity.SysDictValueEntity">
+      SELECT  sdv.id,sdv.name,sdv.value FROM
+      sys_dict_type  sdt
+      LEFT JOIN
+     sys_dict_value  sdv
+     ON      sdt.id=sdv.parent_id
+     WHERE  sdv.del_flag=1
+     AND    sdt.type=#{typeId}
+
+    </select>
+
+
+</mapper>

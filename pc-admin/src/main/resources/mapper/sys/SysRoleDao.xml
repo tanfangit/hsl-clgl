@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.sys.dao.SysRoleDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.sys.entity.SysRoleEntity" id="sysRoleMap">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+    <!-- 查询所有角色-->
+    <select id="queryRoleList" resultType="com.hsl.clgl.pc.admin.modules.sys.entity.SysRoleEntity">
+        select * from sys_role
+        where status = 1
+    </select>
+</mapper>

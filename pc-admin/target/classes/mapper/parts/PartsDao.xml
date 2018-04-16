@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.pc.admin.modules.maintenance.parts.dao.PartsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hsl.clgl.pc.admin.modules.maintenance.parts.entity.PartsEntity" id="partsMap">
+        <result property="partsId" column="parts_id"/>
+        <result property="partsName" column="parts_name"/>
+        <result property="part" column="part"/>
+        <result property="unit" column="unit"/>
+        <result property="brand" column="brand"/>
+        <result property="carLine" column="car_line"/>
+        <result property="suitableModel" column="suitable_model"/>
+        <result property="partsNum" column="parts_num"/>
+        <result property="partsSimpleCode" column="parts_simple_code"/>
+        <result property="properties" column="properties"/>
+        <result property="year" column="year"/>
+        <result property="cost" column="cost"/>
+        <result property="exportPrice" column="export_price"/>
+        <result property="repairPrice" column="repair_price"/>
+        <result property="claimPrice1" column="claim_price1"/>
+        <result property="claimPrice2" column="claim_price2"/>
+        <result property="torage" column="torage"/>
+        <result property="lowerLimit" column="lower_limit"/>
+        <result property="upperLimit" column="upper_limit"/>
+        <result property="latestPrice" column="latest_price"/>
+        <result property="branchPrice" column="branch_price"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <select id="queryPartsList" resultType="com.hsl.clgl.pc.admin.modules.maintenance.parts.entity.PartsEntity">
+        SELECT
+	a.*,
+b.brand_name AS brandName,
+c.train_name AS carLineName,
+d.name as partName,
+e.name as unitName
+FROM
+	clgl.tb_parts a
+LEFT JOIN clgl.tb_car_brand b ON a.brand=b.brand_id
+LEFT JOIN clgl.tb_car_train c ON a.car_line=c.id
+LEFT JOIN clgl.sys_dict_value d ON a.part=d.id
+LEFT JOIN clgl.sys_dict_value e ON a.unit=e.id
+WHERE
+      	a.STATUS = 1
+        <if test="partsName != null and partsName != ''">
+            AND (a.parts_name OR a.parts_num like CONCAT('%',#{partsName},'%' ))
+        </if>
+        <if test="brandName != null and brandName != ''">
+            AND a.brand=#{brandName}
+        </if>
+        <if test="carLine != null and carLine != ''">
+            AND a.car_line=#{carLine}
+        </if>
+
+    </select>
+
+
+</mapper>

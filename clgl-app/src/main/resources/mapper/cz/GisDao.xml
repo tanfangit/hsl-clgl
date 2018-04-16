@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hsl.clgl.app.cz.modules.gis.dao.GisDao">
+
+    <select id="gisMatchDis" resultType="java.lang.String">
+        SELECT
+        a.id
+        FROM
+        tb_merchant a
+        WHERE
+        calculateDistance (
+        #{lng},#{lat},
+        a.lng,
+        a.lat
+        ) = (
+        SELECT
+        min(
+        calculateDistance (
+        #{lng},#{lat},
+        b.lng,
+        b.lat
+        )
+        )
+        FROM
+        tb_merchant b
+        WHERE
+        b.`status` = #{status}
+        AND b.city_id = #{cityId}
+        <if test="merchantType != null and merchantType != ''">
+            AND b.type = #{merchantType}
+        </if>
+        )
+        AND a.`status` = #{status}
+        AND a.city_id = #{cityId}
+        <if test="merchantType != null and merchantType != ''">
+            AND a.type = #{merchantType}
+        </if>
+        LIMIT 1
+    </select>
+</mapper>
